@@ -1,0 +1,13 @@
+#!/bin/bash -l
+#SBATCH -N 1
+#SBATCH -t 012:00:00 
+#SBATCH -q regular
+#SBATCH -J ni_h5
+#SBATCH -L SCRATCH,cfs
+#SBATCH -C cpu
+#SBATCH --output /pscratch/sd/a/asharoff/tmp_neuInv/slurm_logs/slurm-%j.out  # job-array encodding
+
+python3 comprehensive_automation_2_24_v2.py $1 $2
+
+
+

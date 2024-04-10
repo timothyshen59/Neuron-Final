@@ -1,0 +1,12 @@
+#!/bin/bash -l
+#SBATCH -N 1
+#SBATCH -t 024:00:00 
+#SBATCH -q regular
+#SBATCH -J ni_h5
+#SBATCH -L SCRATCH,cfs
+#SBATCH -C cpu
+#SBATCH --output /pscratch/sd/a/asharoff/tmp_neuInv/slurm_logs/slurm-%j.out  # job-array encodding
+
+job_id=$SLURM_JOB_ID
+python3 comprehensive_automation_2_24_v2_specific_channel.py $1 $2 $3
+sacct -j $SLURM_JOB_ID --format=Elapsed > "${2}_elapsed_time.txt"
