@@ -19,7 +19,7 @@ starter_csv = sys.argv[2]
 that_param = sys.argv[3]
 #ender_csv = str(trail_name)+"_newer_suggestion"+".csv"
 #ender_csv = str(starter_csv)+str(super_counter)
-while(FINISHED == False and super_counter < 3):
+while(FINISHED == False and super_counter < 2):
     """
     the_result1 = ""
     subprocess.run("rm -rf data_dir_M1", shell=True)
@@ -77,7 +77,7 @@ while(FINISHED == False and super_counter < 3):
 
     print("yeh")
     print(str(os.getcwd()))
-    the_result1 = subprocess.run('sbatch batchShifter.slr '+ THE_PATH+job_id, stdout=subprocess.PIPE, universal_newlines=True, shell=True)
+    the_result1 = subprocess.run('sbatch batchShifter_new.slr '+ THE_PATH+job_id, stdout=subprocess.PIPE, universal_newlines=True, shell=True)
     print(the_result1.stdout)
     the_result1 = str(the_result1.stdout).split()
     print(the_result1)
@@ -102,7 +102,7 @@ while(FINISHED == False and super_counter < 3):
     print("Finished ML prepping for Analysis")
 
     os.chdir(currentDir)
-    subprocess.run("cp /pscratch/sd/t/timshen/tmp_neuInv/bbp3/L5_TTPC1cADpyr0/"+job_id1+"/the_data.npz /pscratch/sd/t/timshen/NEW_DATA_OCT_25_2023/the_data.npz",shell=True)
+    subprocess.run("cp /pscratch/sd/t/timshen/tmp_neuInv/bbp3/L5_TTPC1cADpyr0/"+job_id1+"/the_data.npz /pscratch/sd/t/timshen/Neuron_Latest_Pipeline/the_data.npz",shell=True)
     subprocess.run("shifter --image=nersc/pytorch:ngc-21.08-v2 ./fixed_threshold_mse_version.sh", shell=True)
 
     subprocess.run("mkdir "+trail_name+str(super_counter), shell=True)
@@ -112,7 +112,10 @@ while(FINISHED == False and super_counter < 3):
     subprocess.run("cp *.csv "+trail_name+str(super_counter)+"/", shell=True)
 
     subprocess.run("cp /pscratch/sd/t/timshen/tmp_neuInv/bbp3/L5_TTPC1cADpyr0/"+str(job_id1)+"/out/*.png "+trail_name+str(super_counter)+"/", shell=True)
-    subprocess.run("python3 shrunk_final.py "+starter_csv+" "+trail_name+str(super_counter)+".csv"+" "+trail_name+str(super_counter)+" "+that_param, shell=True)
+    if(that_param == "overall"):
+        subprocess.run("python3 shrunk.py "+starter_csv+" "+trail_name+str(super_counter)+".csv", shell=True)
+    else:
+        subprocess.run("python3 shrunk_final.py "+starter_csv+" "+trail_name+str(super_counter)+".csv"+" "+trail_name+str(super_counter)+" "+that_param, shell=True)
     subprocess.run("cp *.csv "+trail_name+str(super_counter)+"/", shell=True)
     starter_csv = starter_csv+str(super_counter)
 
@@ -120,4 +123,5 @@ while(FINISHED == False and super_counter < 3):
     if(super_counter == 0):
         FINISHED = False
     super_counter += 1
+    
 

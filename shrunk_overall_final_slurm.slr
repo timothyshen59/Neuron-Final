@@ -13,3 +13,5 @@ sacct -j $SLURM_JOB_ID --format="JobID,Elapsed" > "${2}_job_id_elapsed_time.txt"
 
 
 # Name Run, CSV, Ion Channel(s)
+
+
